@@ -1,2 +1,8 @@
+# Ignore compiled code directory
+dist/
+
+# Ignore node modules
+node_modules/
+
 # Ignore macOS directory files
 .DS_Store
