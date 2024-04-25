@@ -1,0 +1,424 @@
+{
+	"pluginAlias": "Torch",
+	"pluginType": "platform",
+	"singular": true,
+	"headerDisplay": "",
+	"footerDisplay": "",
+	"schema": {
+		"type": "object",
+		"properties": {
+			"lightbulbs": {
+				"type": "array",
+				"items": {
+					"title": "Lightbulb configuration",
+					"type": "object",
+					"properties": {
+						"name": {
+							"title": "Lightbulb name",
+							"type": "string",
+							"default": "Lightbulb",
+							"required": true
+						},
+						"power": {
+							"title": "Lightbulb (advanced) power settings",
+							"type": "object",
+							"properties": {
+								"status": {
+									"type": "object",
+									"properties": {
+										"method": {
+											"title": "HTTP request method",
+											"type": "string",
+											"oneOf": [{ "title": "GET", "enum": ["GET"] }],
+											"default": "GET",
+											"required": true
+										},
+										"url": {
+											"title": "URL",
+											"type": "string",
+											"format": "uri",
+											"default": "http://localhost:7200/power/status",
+											"required": true
+										}
+									}
+								},
+								"update": {
+									"type": "object",
+									"properties": {
+										"method": {
+											"title": "HTTP request method",
+											"type": "string",
+											"oneOf": [
+												{ "title": "GET", "enum": ["GET"] },
+												{ "title": "POST", "enum": ["POST"] },
+												{ "title": "PUT", "enum": ["PUT"] }
+											],
+											"default": "PUT",
+											"required": true
+										},
+										"url": {
+											"title": "URL",
+											"type": "string",
+											"format": "uri",
+											"default": "http://localhost:7200/power/update",
+											"required": true
+										}
+									}
+								}
+							}
+						},
+						"brightness": {
+							"title": "Lightbulb (advanced) brightness settings",
+							"type": "object",
+							"properties": {
+								"mode": {
+									"notitle": true,
+									"type": "string",
+									"oneOf": [
+										{ "title": "DISABLED", "enum": ["DISABLED"] },
+										{ "title": "ENABLED", "enum": ["ENABLED"] }
+									],
+									"default": "ENABLED",
+									"required": true
+								},
+								"unit": {
+									"condition": {
+										"functionBody": "return model.lightbulbs[arrayIndices].brightness.mode === 'ENABLED'"
+									},
+									"type": "string",
+									"oneOf": [
+										{ "title": "Percentage: [0 - 100%]", "enum": ["PERCENTAGE"] },
+										{ "title": "RGB: [0 - 254]", "enum": ["RGB"] }
+									],
+									"default": "PERCENTAGE",
+									"required": true
+								},
+								"status": {
+									"condition": {
+										"functionBody": "return model.lightbulbs[arrayIndices].brightness.mode === 'ENABLED'"
+									},
+									"type": "object",
+									"properties": {
+										"method": {
+											"title": "HTTP request method",
+											"type": "string",
+											"oneOf": [{ "title": "GET", "enum": ["GET"] }],
+											"default": "GET",
+											"required": true
+										},
+										"url": {
+											"title": "URL",
+											"type": "string",
+											"format": "uri",
+											"default": "http://localhost:7200/brightness/status",
+											"required": true
+										}
+									}
+								},
+								"update": {
+									"condition": {
+										"functionBody": "return model.lightbulbs[arrayIndices].brightness.mode === 'ENABLED'"
+									},
+									"type": "object",
+									"properties": {
+										"method": {
+											"title": "HTTP request method",
+											"type": "string",
+											"oneOf": [
+												{ "title": "GET", "enum": ["GET"] },
+												{ "title": "POST", "enum": ["POST"] },
+												{ "title": "PUT", "enum": ["PUT"] }
+											],
+											"default": "PUT",
+											"required": true
+										},
+										"url": {
+											"title": "URL",
+											"type": "string",
+											"format": "uri",
+											"default": "http://localhost:7200/brightness/update",
+											"required": true
+										}
+									}
+								}
+							}
+						},
+						"colour": {
+							"title": "Lightbulb (advanced) colour settings",
+							"type": "object",
+							"properties": {
+								"mode": {
+									"notitle": true,
+									"type": "string",
+									"oneOf": [
+										{ "title": "DISABLED", "enum": ["DISABLED"] },
+										{ "title": "HSV", "enum": ["HSV"] },
+										{ "title": "HEX", "enum": ["HEX"] }
+									],
+									"default": "HSV",
+									"required": true
+								},
+								"hex": {
+									"condition": {
+										"functionBody": "return model.lightbulbs[arrayIndices].colour.mode === 'HEX'"
+									},
+									"title": "RGB HEX settings",
+									"type": "object",
+									"properties": {
+										"status": {
+											"type": "object",
+											"properties": {
+												"method": {
+													"title": "HTTP request method",
+													"type": "string",
+													"oneOf": [{ "title": "GET", "enum": ["GET"] }],
+													"default": "GET",
+													"required": true
+												},
+												"url": {
+													"title": "URL",
+													"type": "string",
+													"format": "uri",
+													"default": "http://localhost:7200/colour/hex/status",
+													"required": true
+												}
+											}
+										},
+										"update": {
+											"type": "object",
+											"properties": {
+												"method": {
+													"title": "HTTP request method",
+													"type": "string",
+													"oneOf": [
+														{ "title": "GET", "enum": ["GET"] },
+														{ "title": "POST", "enum": ["POST"] },
+														{ "title": "PUT", "enum": ["PUT"] }
+													],
+													"default": "PUT",
+													"required": true
+												},
+												"url": {
+													"title": "URL",
+													"type": "string",
+													"format": "uri",
+													"default": "http://localhost:7200/colour/hex/update",
+													"required": true
+												}
+											}
+										}
+									}
+								},
+								"hue": {
+									"condition": {
+										"functionBody": "return model.lightbulbs[arrayIndices].colour.mode == 'HSV'"
+									},
+									"title": "Hue settings",
+									"type": "object",
+									"properties": {
+										"unit": {
+											"type": "string",
+											"oneOf": [
+												{ "title": "Degrees: [0.0 - 360.0°]", "enum": ["DEGREES"] },
+												{ "title": "Zigbee: [0 - 65535]", "enum": ["ZIGBEE"] }
+											],
+											"default": "DEGREES",
+											"required": true
+										},
+										"status": {
+											"type": "object",
+											"properties": {
+												"method": {
+													"title": "HTTP request method",
+													"type": "string",
+													"oneOf": [{ "title": "GET", "enum": ["GET"] }],
+													"default": "GET",
+													"required": true
+												},
+												"url": {
+													"title": "URL",
+													"type": "string",
+													"format": "uri",
+													"default": "http://localhost:7200/colour/hue/status",
+													"required": true
+												}
+											}
+										},
+										"update": {
+											"type": "object",
+											"properties": {
+												"method": {
+													"title": "HTTP request method",
+													"type": "string",
+													"oneOf": [
+														{ "title": "GET", "enum": ["GET"] },
+														{ "title": "POST", "enum": ["POST"] },
+														{ "title": "PUT", "enum": ["PUT"] }
+													],
+													"default": "PUT",
+													"required": true
+												},
+												"url": {
+													"title": "URL",
+													"type": "string",
+													"format": "uri",
+													"default": "http://localhost:7200/colour/hue/update",
+													"required": true
+												}
+											}
+										}
+									}
+								},
+								"saturation": {
+									"condition": {
+										"functionBody": "return model.lightbulbs[arrayIndices].colour.mode == 'HSV'"
+									},
+									"title": "Saturation settings",
+									"type": "object",
+									"properties": {
+										"unit": {
+											"type": "string",
+											"oneOf": [
+												{ "title": "Percentage: [0.0 - 100.0%]", "enum": ["PERCENTAGE"] },
+												{ "title": "RGB: [0 - 254]", "enum": ["RGB"] }
+											],
+											"default": "PERCENTAGE",
+											"required": true
+										},
+										"status": {
+											"type": "object",
+											"properties": {
+												"method": {
+													"title": "HTTP request method",
+													"type": "string",
+													"oneOf": [{ "title": "GET", "enum": ["GET"] }],
+													"default": "GET",
+													"required": true
+												},
+												"url": {
+													"title": "URL",
+													"type": "string",
+													"format": "uri",
+													"default": "http://localhost:7200/colour/saturation/status",
+													"required": true
+												}
+											}
+										},
+										"update": {
+											"type": "object",
+											"properties": {
+												"method": {
+													"title": "HTTP request method",
+													"type": "string",
+													"oneOf": [
+														{ "title": "GET", "enum": ["GET"] },
+														{ "title": "POST", "enum": ["POST"] },
+														{ "title": "PUT", "enum": ["PUT"] }
+													],
+													"default": "PUT",
+													"required": true
+												},
+												"url": {
+													"title": "URL",
+													"type": "string",
+													"format": "uri",
+													"default": "http://localhost:7200/colour/saturation/update",
+													"required": true
+												}
+											}
+										}
+									}
+								}
+							}
+						},
+						"temperature": {
+							"title": "Lightbulb (advanced) colour temperature settings",
+							"type": "object",
+							"properties": {
+								"mode": {
+									"notitle": true,
+									"type": "string",
+									"oneOf": [
+										{ "title": "DISABLED", "enum": ["DISABLED"] },
+										{ "title": "ENABLED", "enum": ["ENABLED"] }
+									],
+									"default": "DISABLED",
+									"required": true
+								},
+								"unit": {
+									"condition": {
+										"functionBody": "return model.lightbulbs[arrayIndices].temperature.mode === 'ENABLED'"
+									},
+									"type": "string",
+									"oneOf": [
+										{ "title": "Kelvin: [7.150 - 2.000K]", "enum": ["KELVIN"] },
+										{ "title": "Microreciprocal degree: [140 - 500]", "enum": ["MIRED"] }
+									],
+									"default": "MIRED",
+									"required": true
+								},
+								"status": {
+									"condition": {
+										"functionBody": "return model.lightbulbs[arrayIndices].temperature.mode === 'ENABLED'"
+									},
+									"type": "object",
+									"properties": {
+										"method": {
+											"title": "HTTP request method",
+											"type": "string",
+											"oneOf": [{ "title": "GET", "enum": ["GET"] }],
+											"default": "GET",
+											"required": true
+										},
+										"url": {
+											"title": "URL",
+											"type": "string",
+											"format": "uri",
+											"default": "http://localhost:7200/colour/temperature/status",
+											"required": true
+										}
+									}
+								},
+								"update": {
+									"condition": {
+										"functionBody": "return model.lightbulbs[arrayIndices].temperature.mode === 'ENABLED'"
+									},
+									"type": "object",
+									"properties": {
+										"method": {
+											"title": "HTTP request method",
+											"type": "string",
+											"oneOf": [
+												{ "title": "GET", "enum": ["GET"] },
+												{ "title": "POST", "enum": ["POST"] },
+												{ "title": "PUT", "enum": ["PUT"] }
+											],
+											"default": "PUT",
+											"required": true
+										},
+										"url": {
+											"title": "URL",
+											"type": "string",
+											"format": "uri",
+											"default": "http://localhost:7200/colour/temperature/update",
+											"required": true
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			"timeout": {
+				"title": "Request timeout",
+				"type": "integer",
+				"minimum": 1000,
+				"maximum": 10000,
+				"default": 3000,
+				"required": true
+			},
+			"debug": { "title": "Enable verbose console logging", "type": "boolean", "default": false }
+		}
+	}
+}
