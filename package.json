@@ -1,0 +1,31 @@
+{
+	"private": true,
+	"displayName": "Torch",
+	"type": "module",
+	"name": "homebridge-torch",
+	"version": "0.0.1",
+	"description": "Torch is a Homebridge Lightbulb plugin written in TypeScript which enables easy control of any lightbulb over HTTP",
+	"keywords": [
+		"homebridge-plugin"
+	],
+	"homepage": "https://github.com/maikdevries/Torch",
+	"bugs": {
+		"url": "https://github.com/maikdevries/Torch/issues"
+	},
+	"license": "MIT",
+	"author": "Maik de Vries",
+	"main": "dist/index.js",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/maikdevries/Torch.git"
+	},
+	"engines": {
+		"node": "^18.15.0 || ^20.7.0",
+		"homebridge": "^1.7.0"
+	},
+	"devDependencies": {
+		"@types/node": "^20.12.7",
+		"homebridge": "^1.7.0",
+		"typescript": "^5.4.5"
+	}
+}
