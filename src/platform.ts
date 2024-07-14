@@ -1,15 +1,18 @@
-import type { API, Characteristic, DynamicPlatformPlugin, Logger, PlatformAccessory, PlatformConfig, Service } from 'homebridge';
+import type { API, Characteristic, DynamicPlatformPlugin, Logging, PlatformAccessory, PlatformConfig, Service } from 'homebridge';
 
 import Lightbulb from './accessory.js';
 import { PLATFORM_NAME, PLUGIN_NAME } from './settings.js';
 
 export default class Platform implements DynamicPlatformPlugin {
-	public readonly Service: typeof Service = this.api.hap.Service;
-	public readonly Characteristic: typeof Characteristic = this.api.hap.Characteristic;
+	public readonly Service: typeof Service;
+	public readonly Characteristic: typeof Characteristic;
 
 	public readonly accessories: PlatformAccessory[] = [];
 
-	constructor (public readonly log: Logger, public readonly config: PlatformConfig, public readonly api: API) {
+	constructor (public readonly log: Logging, public readonly config: PlatformConfig, public readonly api: API) {
+		this.Service = this.api.hap.Service;
+		this.Characteristic = this.api.hap.Characteristic;
+
 		this.log.debug('Finished initialisation of platform:', this.config.name);
 
 		this.api.on('didFinishLaunching', this.discoverDevices);
