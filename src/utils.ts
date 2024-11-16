@@ -19,7 +19,7 @@ export async function fetchJSON (method: string, url: URL, headers?: Record<stri
 			...(headers && { headers: headers }),
 			...(body && { body: body }),
 		});
-	} catch (error: any) { throw new FetchError(503, method, url.toString()) }
+	} catch { throw new FetchError(503, method, url.toString()) }
 
 	return response.ok
 		? await response.json()
