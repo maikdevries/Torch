@@ -1,5 +1,6 @@
 import type Platform from './platform.js';
 
+
 export class FetchError implements Error {
 	public readonly name: string = 'FetchError';
 	public readonly message: string;
