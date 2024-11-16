@@ -14,7 +14,14 @@
 	},
 	"license": "MIT",
 	"author": "Maik de Vries",
-	"main": "dist/index.js",
+	"exports": "./dist/index.js",
+	"files": [
+		".github/README.md",
+		"./dist",
+		"config.schema.json",
+		"LICENSE",
+		"package.json"
+	],
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/maikdevries/Torch.git"
