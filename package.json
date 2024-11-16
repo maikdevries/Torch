@@ -20,12 +20,12 @@
 		"url": "git+https://github.com/maikdevries/Torch.git"
 	},
 	"engines": {
-		"node": "^18.15.0 || ^20.7.0",
-		"homebridge": "^1.8.0"
+		"node": "^18.20.5 || ^20.18.0 || ^22.11.0",
+		"homebridge": "^1.8.5 || ^2.0.0"
 	},
 	"devDependencies": {
-		"@types/node": "^20.14.10",
-		"homebridge": "^1.8.3",
-		"typescript": "^5.5.3"
+		"@types/node": "^22.9.0",
+		"homebridge": "^1.8.5",
+		"typescript": "^5.6.3"
 	}
 }
