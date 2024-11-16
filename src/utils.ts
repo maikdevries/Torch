@@ -11,14 +11,17 @@ export class FetchError implements Error {
 	}
 }
 
-export async function fetchJSON (method: keyof typeof HTTP_METHOD, url: URL, headers?: Record<string, string>, body?: string): Promise<JSON> | never {
+export async function fetchJSON (method: keyof typeof HTTP_METHOD, url: URL, body?: JSON): Promise<JSON> | never {
 	let response: Response;
 
 	try {
 		response = await fetch(url, {
 			'method': method,
-			...(headers && { headers: headers }),
-			...(body && { body: body }),
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json',
+			},
+			...(body && { body: JSON.stringify(body) }),
 		});
 	} catch { throw new FetchError(503, method, url.toString()) }
 
