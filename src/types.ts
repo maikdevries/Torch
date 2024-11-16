@@ -84,3 +84,7 @@ export const TEMPERATURE_UNIT = {
 	KELVIN: 'KELVIN',
 	MIRED: 'MIRED',
 } as const;
+
+export interface JSON {
+	[key: string]: string | number | boolean | null | JSON | JSON[];
+}
