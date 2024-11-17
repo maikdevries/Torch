@@ -1,9 +1,11 @@
 import type { CharacteristicValue, PlatformAccessory, Service } from 'homebridge';
 import type Platform from './platform.js';
-import { BRIGHTNESS_UNIT, COLOUR_MODE, type Config, HUE_UNIT, MODE, SATURATION_UNIT, type State, TEMPERATURE_UNIT } from './types.js';
+import type { Config, State } from './types.js';
+import type { FetchError } from './utils.js';
 
 import { FIRMWARE_REVISION, MANUFACTURER, MODEL, SERIAL_NUMBER } from './settings.js';
-import { fetchJSON, handleFetchError, type FetchError } from './utils.js';
+import { BRIGHTNESS_UNIT, COLOUR_MODE, HUE_UNIT, MODE, SATURATION_UNIT, TEMPERATURE_UNIT } from './types.js';
+import { fetchJSON, handleFetchError } from './utils.js';
 
 
 export default class Lightbulb {
