@@ -15,7 +15,7 @@ export default class Platform implements DynamicPlatformPlugin {
 		this.Service = this.api.hap.Service;
 		this.Characteristic = this.api.hap.Characteristic;
 
-		this.log.debug('Finished initialisation of platform:', this.config.name);
+		this.log.debug('Finished initialisation of platform:', this.config.platform);
 
 		this.api.on('didFinishLaunching', () => this.discoverDevices());
 	}
@@ -29,7 +29,7 @@ export default class Platform implements DynamicPlatformPlugin {
 
 	private discoverDevices (): void {
 		for (const lightbulb of this.config.lightbulbs) {
-			const uuid = this.api.hap.uuid.generate(`${this.config.name} - ${lightbulb.name}`);
+			const uuid = this.api.hap.uuid.generate(`${this.config.platform} - ${lightbulb.name}`);
 
 			const existingAccessory = this.accessories.find((x) => x.UUID === uuid);
 
