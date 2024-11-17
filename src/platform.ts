@@ -1,4 +1,5 @@
-import type { API, Characteristic, DynamicPlatformPlugin, Logging, PlatformAccessory, PlatformConfig, Service } from 'homebridge';
+import type { API, Characteristic, DynamicPlatformPlugin, Logging, PlatformAccessory, Service } from 'homebridge';
+import type { Config, Context } from './types.js';
 
 import Lightbulb from './accessory.js';
 import { PLATFORM_NAME, PLUGIN_NAME } from './settings.js';
@@ -8,9 +9,9 @@ export default class Platform implements DynamicPlatformPlugin {
 	public readonly Service: typeof Service;
 	public readonly Characteristic: typeof Characteristic;
 
-	public readonly accessories: PlatformAccessory[] = [];
+	public readonly accessories: PlatformAccessory<Context>[] = [];
 
-	constructor (public readonly log: Logging, public readonly config: PlatformConfig, public readonly api: API) {
+	constructor (public readonly log: Logging, public readonly config: Config, public readonly api: API) {
 		this.Service = this.api.hap.Service;
 		this.Characteristic = this.api.hap.Characteristic;
 
@@ -19,7 +20,7 @@ export default class Platform implements DynamicPlatformPlugin {
 		this.api.on('didFinishLaunching', this.discoverDevices);
 	}
 
-	configureAccessory (accessory: PlatformAccessory): void {
+	configureAccessory (accessory: PlatformAccessory<Context>): void {
 		this.log.info('Configuring accessory:', accessory.displayName);
 
 		new Lightbulb(this, accessory);
@@ -40,7 +41,7 @@ export default class Platform implements DynamicPlatformPlugin {
 			} else {
 				this.log.info('Creating new accessory:', lightbulb.name);
 
-				const accessory = new this.api.platformAccessory(lightbulb.name, uuid);
+				const accessory = new this.api.platformAccessory<Context>(lightbulb.name, uuid);
 				accessory.context.device = lightbulb;
 
 				this.configureAccessory(accessory);

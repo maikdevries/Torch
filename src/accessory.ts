@@ -1,6 +1,6 @@
 import type { CharacteristicValue, PlatformAccessory, Service } from 'homebridge';
 import type Platform from './platform.js';
-import type { Config, State } from './types.js';
+import type { Context, LightbulbConfig, State } from './types.js';
 import type { FetchError } from './utils.js';
 
 import { FIRMWARE_REVISION, MANUFACTURER, MODEL, SERIAL_NUMBER } from './settings.js';
@@ -11,7 +11,7 @@ import { fetchJSON, handleFetchError } from './utils.js';
 export default class Lightbulb {
 	private service: Service;
 
-	private readonly config: Config;
+	private readonly config: LightbulbConfig;
 
 	// [TODO]
 	private state: State = {
@@ -22,7 +22,7 @@ export default class Lightbulb {
 		saturation: 0,
 	}
 
-	constructor (private readonly platform: Platform, private readonly accessory: PlatformAccessory) {
+	constructor (private readonly platform: Platform, private readonly accessory: PlatformAccessory<Context>) {
 		this.config = this.accessory.context.device;
 
 		this.accessory.getService(this.platform.Service.AccessoryInformation)!

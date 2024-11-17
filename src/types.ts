@@ -1,3 +1,6 @@
+import type { PlatformConfig } from 'homebridge';
+
+
 export interface State {
 	power: boolean;
 	brightness: number;
@@ -6,7 +9,15 @@ export interface State {
 	saturation: number;
 }
 
-export interface Config {
+export interface Config extends PlatformConfig {
+	lightbulbs: LightbulbConfig[];
+}
+
+export interface Context {
+	device: LightbulbConfig;
+}
+
+export interface LightbulbConfig {
 	name: string;
 	power: {
 		status: Endpoint;
