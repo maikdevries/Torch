@@ -17,7 +17,7 @@ export default class Platform implements DynamicPlatformPlugin {
 
 		this.log.debug('Finished initialisation of platform:', this.config.name);
 
-		this.api.on('didFinishLaunching', this.discoverDevices);
+		this.api.on('didFinishLaunching', () => this.discoverDevices());
 	}
 
 	configureAccessory (accessory: PlatformAccessory<Context>): void {
