@@ -38,9 +38,9 @@ export default class Platform implements DynamicPlatformPlugin {
 				existingAccessory.context.device = lightbulb;
 				this.api.updatePlatformAccessories([existingAccessory]);
 			} else {
-				this.log.info('Creating new accessory:', lightbulb.displayName);
+				this.log.info('Creating new accessory:', lightbulb.name);
 
-				const accessory = new this.api.platformAccessory(lightbulb.displayName, uuid);
+				const accessory = new this.api.platformAccessory(lightbulb.name, uuid);
 				accessory.context.device = lightbulb;
 
 				this.configureAccessory(accessory);
