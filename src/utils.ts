@@ -1,5 +1,7 @@
 import type Platform from './platform.js';
-import type { HTTP_METHOD, JSON } from './types.js';
+import type { JSON } from './types.js';
+
+import { HTTP_METHOD } from './types.js';
 
 
 export class FetchError implements Error {
@@ -26,7 +28,7 @@ export async function fetchJSON (method: keyof typeof HTTP_METHOD, url: URL, bod
 	} catch { throw new FetchError(503, method, url.toString()) }
 
 	return response.ok
-		? await response.json() as JSON
+		? (method === HTTP_METHOD.GET ? await response.json() as JSON : {})
 		: (() => { throw new FetchError(response.status, method, response.url) })();
 }
 
