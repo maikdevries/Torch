@@ -15,11 +15,11 @@ export default class Lightbulb {
 
 	// [TODO]
 	private state: State = {
-		power: false,
-		brightness: 0,
-		temperature: 0,
-		hue: 0,
-		saturation: 0,
+		'power': false,
+		'brightness': 0,
+		'temperature': 0,
+		'hue': 0,
+		'saturation': 0,
 	}
 
 	constructor (private readonly platform: Platform, private readonly accessory: PlatformAccessory<Context>) {

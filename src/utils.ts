@@ -19,11 +19,11 @@ export async function fetchJSON (method: keyof typeof HTTP_METHOD, url: URL, bod
 	try {
 		response = await fetch(url, {
 			'method': method,
-			headers: {
+			'headers': {
 				'Accept': 'application/json',
 				'Content-Type': 'application/json',
 			},
-			...(body && { body: JSON.stringify(body) }),
+			...(body && { 'body': JSON.stringify(body) }),
 		});
 	} catch { throw new FetchError(503, method, url.toString()) }
 
