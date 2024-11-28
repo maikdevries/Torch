@@ -16,10 +16,10 @@ export default class Lightbulb {
 	// [TODO]
 	private state: State = {
 		'power': false,
-		'brightness': 0,
-		'temperature': 0,
-		'hue': 0,
-		'saturation': 0,
+		'brightness': NaN,
+		'temperature': NaN,
+		'hue': NaN,
+		'saturation': NaN,
 	}
 
 	constructor (private readonly platform: Platform, private readonly accessory: PlatformAccessory<Context>) {
@@ -104,6 +104,8 @@ export default class Lightbulb {
 	}
 
 	async getBrightness (): Promise<CharacteristicValue> {
+		if (!Number.isNaN(this.state.brightness)) return this.state.brightness;
+
 		try {
 			const data = await fetchJSON(
 				this.config.brightness.status.method,
@@ -150,6 +152,8 @@ export default class Lightbulb {
 	}
 
 	async getHue (): Promise<CharacteristicValue> {
+		if (!Number.isNaN(this.state.hue)) return this.state.hue;
+
 		try {
 			const data = await fetchJSON(
 				this.config.colour.hue.status.method,
@@ -196,6 +200,8 @@ export default class Lightbulb {
 	}
 
 	async getSaturation (): Promise<CharacteristicValue> {
+		if (!Number.isNaN(this.state.saturation)) return this.state.saturation;
+
 		try {
 			const data = await fetchJSON(
 				this.config.colour.saturation.status.method,
@@ -242,6 +248,8 @@ export default class Lightbulb {
 	}
 
 	async getTemperature (): Promise<CharacteristicValue> {
+		if (!Number.isNaN(this.state.temperature)) return this.state.temperature;
+
 		try {
 			const data = await fetchJSON(
 				this.config.temperature.status.method,
