@@ -417,8 +417,7 @@
 				"maximum": 10000,
 				"default": 3000,
 				"required": true
-			},
-			"debug": { "title": "Enable verbose console logging", "type": "boolean", "default": false }
+			}
 		}
 	}
 }
