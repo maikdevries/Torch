@@ -1,5 +1,4 @@
 {
-	"private": true,
 	"displayName": "Torch",
 	"type": "module",
 	"name": "homebridge-torch",
@@ -16,11 +15,11 @@
 	"author": "Maik de Vries",
 	"exports": "./dist/index.js",
 	"files": [
-		".github/README.md",
 		"./dist",
 		"config.schema.json",
 		"LICENSE",
-		"package.json"
+		"package.json",
+		"README.md"
 	],
 	"repository": {
 		"type": "git",
