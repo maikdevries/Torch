@@ -1,5 +1,5 @@
 {
-	"pluginAlias": "homebridge-torch-platform",
+	"pluginAlias": "Torch",
 	"pluginType": "platform",
 	"singular": true,
 	"headerDisplay": "",

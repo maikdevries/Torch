@@ -1,4 +1,4 @@
-export const PLATFORM_NAME = 'homebridge-torch-platform';
+export const PLATFORM_NAME = 'Torch';
 
 export const PLUGIN_NAME = 'homebridge-torch';
 
