@@ -2,7 +2,7 @@
 	"displayName": "Torch",
 	"type": "module",
 	"name": "homebridge-torch",
-	"version": "0.0.1",
+	"version": "0.1.0",
 	"description": "Torch is a Homebridge Lightbulb plugin written in TypeScript which enables easy control of any lightbulb over HTTP",
 	"keywords": [
 		"homebridge-plugin"
