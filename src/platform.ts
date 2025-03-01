@@ -1,8 +1,8 @@
 import type { API, Characteristic, DynamicPlatformPlugin, Logging, PlatformAccessory, Service } from 'homebridge';
-import type { Config, Context } from './types.js';
+import type { Config, Context } from './types.ts';
 
-import Lightbulb from './accessory.js';
-import { PLATFORM_NAME, PLUGIN_NAME } from './settings.js';
+import Lightbulb from './accessory.ts';
+import { PLATFORM_NAME, PLUGIN_NAME } from './settings.ts';
 
 
 export default class Platform implements DynamicPlatformPlugin {

@@ -1,7 +1,7 @@
-import type Platform from './platform.js';
-import type { JSON } from './types.js';
+import type Platform from './platform.ts';
+import type { JSON } from './types.ts';
 
-import { HTTP_METHOD } from './types.js';
+import { HTTP_METHOD } from './types.ts';
 
 
 export class FetchError implements Error {
