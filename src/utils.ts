@@ -27,9 +27,8 @@ export async function fetchJSON (method: keyof typeof HTTP_METHOD, url: URL, bod
 		});
 	} catch { throw new FetchError(503, method, url.toString()) }
 
-	return response.ok
-		? (method === HTTP_METHOD.GET ? await response.json() as JSON : {})
-		: (() => { throw new FetchError(response.status, method, response.url) })();
+	if (response.ok) return (method === HTTP_METHOD.GET ? await response.json() as JSON : {});
+	else throw new FetchError(response.status, method, response.url);
 }
 
 export function handleFetchError (platform: Platform, error: FetchError): never {
