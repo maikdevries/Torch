@@ -7,6 +7,7 @@ export interface State {
 	temperature: number;
 	hue: number;
 	saturation: number;
+	effect: Effect | null;
 }
 
 export interface Config extends PlatformConfig {

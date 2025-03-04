@@ -1,6 +1,6 @@
 import type { CharacteristicValue, PlatformAccessory, Service } from 'homebridge';
 import type Platform from './platform.ts';
-import type { Context, LightbulbConfig, State } from './types.ts';
+import type { Context, Effect, JSON, LightbulbConfig, State } from './types.ts';
 import type { FetchError } from './utils.ts';
 
 import { FIRMWARE_REVISION, MANUFACTURER, MODEL, SERIAL_NUMBER } from './settings.ts';
@@ -10,6 +10,7 @@ import { fetchJSON, handleFetchError } from './utils.ts';
 
 export default class Lightbulb {
 	private service: Service;
+	private television: Service | null = null;
 
 	private readonly config: LightbulbConfig;
 
@@ -20,6 +21,7 @@ export default class Lightbulb {
 		'temperature': NaN,
 		'hue': NaN,
 		'saturation': NaN,
+		'effect': null,
 	}
 
 	constructor (private readonly platform: Platform, private readonly accessory: PlatformAccessory<Context>) {
@@ -64,6 +66,41 @@ export default class Lightbulb {
 			this.service.getCharacteristic(this.platform.Characteristic.ColorTemperature)
 				.onGet(this.getTemperature.bind(this))
 				.onSet(this.setTemperature.bind(this));
+		}
+
+		if (this.config.effect.mode === MODE.ENABLED) {
+			this.television = this.accessory.getService(this.platform.Service.Television)
+				?? this.accessory.addService(this.platform.Service.Television);
+
+			this.television
+				// .setCharacteristic(this.platform.Characteristic.Active, this.platform.Characteristic.Active.INACTIVE)
+				// .setCharacteristic(this.platform.Characteristic.ActiveIdentifier, 0)
+				.setCharacteristic(this.platform.Characteristic.ConfiguredName, `${this.config.name} Effects`)
+				// .setCharacteristic(this.platform.Characteristic.RemoteKey, this.platform.Characteristic.RemoteKey.SELECT)
+				// .setCharacteristic(this.platform.Characteristic.SleepDiscoveryMode, this.platform.Characteristic.SleepDiscoveryMode.ALWAYS_DISCOVERABLE);
+
+			for (const [i, effect] of this.config.effect.effects.entries()) {
+				const service = this.accessory.getService(`Effect: ${effect.type}`)
+					?? this.accessory.addService(this.platform.Service.InputSource, `Effect: ${effect.type}`, effect.type);
+
+				service
+					.setCharacteristic(this.platform.Characteristic.ConfiguredName, effect.type)
+					.setCharacteristic(this.platform.Characteristic.CurrentVisibilityState, this.platform.Characteristic.CurrentVisibilityState.SHOWN)
+					.setCharacteristic(this.platform.Characteristic.Identifier, i)
+					.setCharacteristic(this.platform.Characteristic.InputSourceType, this.platform.Characteristic.InputSourceType.OTHER)
+					.setCharacteristic(this.platform.Characteristic.IsConfigured, this.platform.Characteristic.IsConfigured.CONFIGURED)
+					.setCharacteristic(this.platform.Characteristic.Name, `Effect: ${effect.type}`);
+
+				this.television.addLinkedService(service);
+			}
+
+			this.television.getCharacteristic(this.platform.Characteristic.Active)
+				.onGet(this.getActive.bind(this))
+				.onSet(this.setActive.bind(this));
+
+			this.television.getCharacteristic(this.platform.Characteristic.ActiveIdentifier)
+				.onGet(this.getActiveIdentifier.bind(this))
+				.onSet(this.setActiveIdentifier.bind(this));
 		}
 	}
 
@@ -293,6 +330,61 @@ export default class Lightbulb {
 
 			this.state.temperature = value as number;
 			this.platform.log.debug('Changed the colour temperature to:', this.state.temperature);
+		} catch (error: unknown) { return handleFetchError(this.platform, error as FetchError) }
+	}
+
+	async getActive (): Promise<CharacteristicValue> {
+		return await this.getEffect() !== null;
+	}
+
+	async setActive (value: CharacteristicValue): Promise<void> {
+		const active = value as boolean;
+
+		return await this.setEffect(active ? await this.getEffect() : null);
+	}
+
+	async getActiveIdentifier (): Promise<CharacteristicValue> {
+		const effect = await this.getEffect();
+
+		if (effect) return this.config.effect.effects.findIndex(({ type }) => type === effect.type);
+		else return 0;
+	}
+
+	async setActiveIdentifier (value: CharacteristicValue): Promise<void> {
+		const identifier = value as number;
+
+		return await this.setEffect(this.config.effect.effects[identifier] ?? await this.getEffect());
+	}
+
+	private async getEffect (): Promise<Effect | null> {
+		if (this.state.effect !== null) return this.state.effect;
+
+		try {
+			const data = await fetchJSON(
+				this.config.effect.status.method,
+				new URL(this.config.effect.status.url),
+			);
+
+			this.platform.log.debug('Retrieved the effect as:', data.effect);
+
+			this.state.effect = data.effect as Effect | null;
+			return this.state.effect;
+		} catch (error: unknown) { return handleFetchError(this.platform, error as FetchError) }
+	}
+
+	private async setEffect (effect: Effect | null): Promise<void> {
+		if (this.state.effect?.speed === effect?.speed && this.state.effect?.type === effect?.type)
+			return this.platform.log.debug('The effect remains:', this.state.effect);
+
+		try {
+			await fetchJSON(
+				this.config.effect.update.method,
+				new URL(this.config.effect.update.url),
+				{ 'effect': effect as unknown as JSON },
+			);
+
+			this.state.effect = effect;
+			this.platform.log.debug('Changed the effect to:', this.state.effect);
 		} catch (error: unknown) { return handleFetchError(this.platform, error as FetchError) }
 	}
 }
