@@ -406,6 +406,92 @@
 									}
 								}
 							}
+						},
+						"effect": {
+							"title": "Lightbulb (advanced) effect settings",
+							"type": "object",
+							"properties": {
+								"mode": {
+									"notitle": true,
+									"type": "string",
+									"oneOf": [
+										{ "title": "DISABLED", "enum": ["DISABLED"] },
+										{ "title": "ENABLED", "enum": ["ENABLED"] }
+									],
+									"default": "DISABLED",
+									"required": true
+								},
+								"status": {
+									"condition": {
+										"functionBody": "return model.lightbulbs[arrayIndices].effect.mode === 'ENABLED'"
+									},
+									"type": "object",
+									"properties": {
+										"method": {
+											"title": "HTTP request method",
+											"type": "string",
+											"oneOf": [{ "title": "GET", "enum": ["GET"] }],
+											"default": "GET",
+											"required": true
+										},
+										"url": {
+											"title": "URL",
+											"type": "string",
+											"format": "uri",
+											"default": "http://localhost:7200/effect/status",
+											"required": true
+										}
+									}
+								},
+								"update": {
+									"condition": {
+										"functionBody": "return model.lightbulbs[arrayIndices].effect.mode === 'ENABLED'"
+									},
+									"type": "object",
+									"properties": {
+										"method": {
+											"title": "HTTP request method",
+											"type": "string",
+											"oneOf": [
+												{ "title": "GET", "enum": ["GET"] },
+												{ "title": "POST", "enum": ["POST"] },
+												{ "title": "PUT", "enum": ["PUT"] }
+											],
+											"default": "PUT",
+											"required": true
+										},
+										"url": {
+											"title": "URL",
+											"type": "string",
+											"format": "uri",
+											"default": "http://localhost:7200/effect/update",
+											"required": true
+										}
+									}
+								},
+								"effects": {
+									"condition": {
+										"functionBody": "return model.lightbulbs[arrayIndices].effect.mode === 'ENABLED'"
+									},
+									"type": "array",
+									"items": {
+										"title": "Effect configuration",
+										"type": "object",
+										"properties": {
+											"speed": {
+												"type": "integer",
+												"minimum": 1,
+												"maximum": 1000,
+												"required": true
+											},
+											"type": {
+												"type": "string",
+												"required": true
+											}
+										}
+									}
+								}
+							}
 						}
 					}
 				}
