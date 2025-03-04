@@ -52,6 +52,17 @@ export interface LightbulbConfig {
 		status: Endpoint;
 		update: Endpoint;
 	};
+	effect: {
+		mode: keyof typeof MODE;
+		status: Endpoint;
+		update: Endpoint;
+		effects: Effect[];
+	}
+}
+
+export interface Effect {
+	speed: number;
+	type: string;
 }
 
 interface Endpoint {
