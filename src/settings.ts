@@ -8,4 +8,4 @@ export const MODEL = PLUGIN_NAME;
 
 export const SERIAL_NUMBER = '404';
 
-export const FIRMWARE_REVISION = '0.0.1';
+export const FIRMWARE_REVISION = '0.1.0';
