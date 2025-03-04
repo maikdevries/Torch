@@ -8,7 +8,7 @@
 		"module": "ES2022",
 		"moduleResolution": "node",
 		"esModuleInterop": true,
-		// "verbatimModuleSyntax": true,
+		"verbatimModuleSyntax": true,
 
 		"allowJs": false,
 		"allowUnreachableCode": false,
@@ -21,7 +21,7 @@
 		"noImplicitOverride": true,
 		"noImplicitReturns": true,
 		"noImplicitThis": true,
-		// "noPropertyAccessFromIndexSignature": true,
+		"noPropertyAccessFromIndexSignature": true,
 		"noUncheckedIndexedAccess": true,
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
