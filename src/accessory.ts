@@ -114,11 +114,11 @@ export default class Lightbulb {
 			const data = await fetchJSON(
 				this.config.power.status.method,
 				new URL(this.config.power.status.url),
-			);
+			) as { 'power': boolean };
 
 			this.platform.log.debug('Retrieved the power state as:', data.power);
 
-			this.state.power = data.power as boolean;
+			this.state.power = data.power;
 			return this.state.power;
 		} catch (error: unknown) { return handleFetchError(this.platform, error as FetchError) }
 	}
@@ -147,18 +147,18 @@ export default class Lightbulb {
 			const data = await fetchJSON(
 				this.config.brightness.status.method,
 				new URL(this.config.brightness.status.url),
-			);
+			) as { 'brightness': number };
 
 			this.platform.log.debug('Retrieved the brightness as:', data.brightness);
 
 			// [NOTE] Convert retrieved RGB brightness value in range [0 - 254] to percentage value in range [0 - 100]
 			if (this.config.brightness.unit === BRIGHTNESS_UNIT.RGB) {
-				data.brightness = Math.round((data.brightness as number) / 254 * 100);
+				data.brightness = Math.round(data.brightness / 254 * 100);
 				this.platform.log.debug('Converted the retrieved brightness to:', data.brightness);
 			}
 
 			// [NOTE] Clamp brightness value to expected range [0 - 100]
-			data.brightness = Math.max(0, Math.min(100, (data.brightness as number)));
+			data.brightness = Math.max(0, Math.min(100, data.brightness));
 
 			this.state.brightness = data.brightness;
 			return this.state.brightness;
@@ -195,18 +195,18 @@ export default class Lightbulb {
 			const data = await fetchJSON(
 				this.config.colour.hue.status.method,
 				new URL(this.config.colour.hue.status.url),
-			);
+			) as { 'hue': number };
 
 			this.platform.log.debug('Retrieved the hue as:', data.hue);
 
 			// [NOTE] Convert retrieved Zigbee hue value in range [0 - 65535] to degree value in range [0 - 360]
 			if (this.config.colour.hue.unit === HUE_UNIT.ZIGBEE) {
-				data.hue = Math.round((data.hue as number) / 65535 * 360);
+				data.hue = Math.round(data.hue / 65535 * 360);
 				this.platform.log.debug('Converted the retrieved hue to:', data.hue);
 			}
 
 			// [NOTE] Clamp hue value to expected range [0 - 360]
-			data.hue = Math.max(0, Math.min(360, (data.hue as number)));
+			data.hue = Math.max(0, Math.min(360, data.hue));
 
 			this.state.hue = data.hue;
 			return this.state.hue;
@@ -243,18 +243,18 @@ export default class Lightbulb {
 			const data = await fetchJSON(
 				this.config.colour.saturation.status.method,
 				new URL(this.config.colour.saturation.status.url),
-			);
+			) as { 'saturation': number };
 
 			this.platform.log.debug('Retrieved the saturation as:', data.saturation);
 
 			// [NOTE] Convert retrieved RGB saturation value in range [0 - 254] to percentage value in range [0 - 100]
 			if (this.config.colour.saturation.unit === SATURATION_UNIT.RGB) {
-				data.saturation = Math.round((data.saturation as number) / 254 * 100);
+				data.saturation = Math.round(data.saturation / 254 * 100);
 				this.platform.log.debug('Converted the retrieved saturation to:', data.saturation);
 			}
 
 			// [NOTE] Clamp saturation value to expected range [0 - 100]
-			data.saturation = Math.max(0, Math.min(100, (data.saturation as number)));
+			data.saturation = Math.max(0, Math.min(100, data.saturation));
 
 			this.state.saturation = data.saturation;
 			return this.state.saturation;
@@ -291,18 +291,18 @@ export default class Lightbulb {
 			const data = await fetchJSON(
 				this.config.temperature.status.method,
 				new URL(this.config.temperature.status.url),
-			);
+			) as { 'temperature': number };
 
 			this.platform.log.debug('Retrieved the colour temperature as:', data.temperature);
 
 			// [NOTE] Convert retrieved Kelvin colour temperature value in range [7150 - 2000] to Mired value in range [140 - 500]
 			if (this.config.temperature.unit === TEMPERATURE_UNIT.KELVIN) {
-				data.temperature = Math.round(1000000 / (data.temperature as number));
+				data.temperature = Math.round(1000000 / data.temperature);
 				this.platform.log.debug('Converted the retrieved colour temperature to:', data.temperature);
 			}
 
 			// [NOTE] Clamp colour temperature value to expected range [140 - 500]
-			data.temperature = Math.max(140, Math.min(500, (data.temperature as number)));
+			data.temperature = Math.max(140, Math.min(500, data.temperature));
 
 			this.state.temperature = data.temperature;
 			return this.state.temperature;
@@ -363,11 +363,11 @@ export default class Lightbulb {
 			const data = await fetchJSON(
 				this.config.effect.status.method,
 				new URL(this.config.effect.status.url),
-			);
+			) as { 'effect': Effect | null };
 
 			this.platform.log.debug('Retrieved the effect as:', data.effect);
 
-			this.state.effect = data.effect as Effect | null;
+			this.state.effect = data.effect;
 			return this.state.effect;
 		} catch (error: unknown) { return handleFetchError(this.platform, error as FetchError) }
 	}
